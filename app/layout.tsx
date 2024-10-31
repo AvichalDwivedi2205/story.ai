@@ -26,8 +26,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased circular-gradient`}
       >
+        <div className="orbit orbit-1"></div>
+        <div className="orbit orbit-2"></div>
+        <div className="orbit orbit-3"></div>
+        <div className="orbit orbit-4"></div>
         {children}
       </body>
     </html>

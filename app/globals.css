@@ -21,32 +21,18 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, #5e4b8a, #7a18bc);
+  background: linear-gradient(90deg, #2e3b8e, #1c2a6d); /* Dark blue gradient */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: glow 1.5s infinite alternate;
-  text-shadow: 0 0 5px rgba(94, 75, 138, 0.7), 
-               0 0 10px rgba(122, 24, 188, 0.5), 
-               0 0 15px rgba(122, 24, 188, 0.3);
+  
 }
 
-@keyframes glow {
-  0% {
-    text-shadow: 0 0 5px rgba(94, 75, 138, 0.7), 
-                 0 0 10px rgba(122, 24, 188, 0.5), 
-                 0 0 15px rgba(122, 24, 188, 0.3);
-  }
-  100% {
-    text-shadow: 0 0 20px rgba(94, 75, 138, 1), 
-                 0 0 30px rgba(122, 24, 188, 1), 
-                 0 0 40px rgba(122, 24, 188, 1);
-  }
-}
+
+
 .circular-gradient {
   position: relative;
   height: 100vh;
   background: radial-gradient(circle, rgba(128, 0, 128, 1) 0%, rgba(0, 0, 0, 1) 70%);
-  display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
@@ -60,9 +46,7 @@ body {
 
 /* Responsive orbit sizes */
 .orbit.orbit-1 { width: 20vw; height: 20vw; }
-.orbit.orbit-2 { width: 30vw; height: 30vw; }
-.orbit.orbit-3 { width: 40vw; height: 40vw; }
-.orbit.orbit-4 { width: 50vw; height: 50vw; }
-.orbit.orbit-5 { width: 60vw; height: 60vw; }
-.orbit.orbit-6 { width: 70vw; height: 70vw; }
+.orbit.orbit-2 { width: 40vw; height: 40vw; }
+.orbit.orbit-3 { width: 60vw; height: 60vw; }
+.orbit.orbit-3 { width: 80vw; height: 80vw; }
 
