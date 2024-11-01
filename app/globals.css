@@ -41,8 +41,10 @@ body {
 .orbit {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.16); /* Faint white for the orbits */
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  z-index: -1; /* Add this to push orbits to the background */
 }
+
 
 /* Responsive orbit sizes */
 .orbit.orbit-1 { width: 20vw; height: 20vw; }

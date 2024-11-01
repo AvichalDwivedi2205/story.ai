@@ -45,7 +45,6 @@ export default function Home() {
             </button>
           </h1>
         </div>
-
         {/* How it Works Section */}
       </BackgroundLines>
     </div>
