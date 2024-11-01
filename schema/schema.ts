@@ -2,7 +2,7 @@ export type User = {
     uid: string;               // Unique user ID from Firebase
     name: string;
     email: string;
-    credits: number;           // Available credits for the current day
+    availableCredits: number;           // Available credits for the current day
     planType: 'free' | 'paid'; // Plan type, either 'free' or 'paid'
     dailyCreditLimit: number;  // Credit limit per day based on the plan
     lastCreditReset: Date;     // Date for last credit reset
