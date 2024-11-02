@@ -1,25 +1,46 @@
-import * as React from "react"
+import React, { useState } from 'react';
 
-import { cn } from "@/lib/utils"
+interface CustomTextareaProps {
+  placeholder: string;
+  value: string;
+  onInputChange: (value: string) => void;
+  wordLimit?: number;
+}
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+const CustomTextarea: React.FC<CustomTextareaProps> = ({
+  placeholder,
+  value,
+  onInputChange,
+  wordLimit = 120,
+}) => {
+  const [wordCount, setWordCount] = useState(0);
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
-    return (
-      <input
-        type={type}
-        className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-          className
-        )}
-        ref={ref}
-        {...props}
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = event.target.value;
+
+    // Calculate word count, setting to 0 if the text is empty or only whitespace
+    const words = newValue.trim() ? newValue.trim().split(/\s+/).length : 0;
+    setWordCount(words);
+
+    // Limit word count
+    if (words <= wordLimit) {
+      onInputChange(newValue);
+    }
+  };
+
+  return (
+    <div>
+      <textarea
+        className="border bg-black border-gray-300 rounded-md p-2 w-full h-32 resize-none focus:ring-blue-500 focus:border-blue-500"
+        placeholder={placeholder}
+        value={value}
+        onChange={handleChange}
       />
-    )
-  }
-)
-Input.displayName = "Input"
+      <p className="text-gray-500 text-sm mt-1">
+        Word Count: {wordCount}/{wordLimit}
+      </p>
+    </div>
+  );
+};
 
-export { Input }
+export default CustomTextarea;

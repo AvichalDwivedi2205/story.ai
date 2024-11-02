@@ -2,9 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { BackgroundLines } from "@/components/ui/background-lines";
-import Image from "next/image";
-import bgImage from "@/assets/_b7f52e18-cda0-4aa0-a0e0-5687b53b67bd.jpeg";
-import { div } from "framer-motion/client";
+import HomeLayout from "./home-layout"
 
 export default function Home() {
   const prompt = "I am very depressed. Write me a story to cheer me up. It should start with The story goes like this";
@@ -21,15 +19,8 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <HomeLayout>
       <BackgroundLines className="circular-gradient" svgOptions={{ duration: 10 }}>
-        {/* Orbits for the background */}
-        <div className="orbit orbit-1"></div>
-        <div className="orbit orbit-2"></div>
-        <div className="orbit orbit-3"></div>
-        <div className="orbit orbit-4"></div>
-        
-        {/* Main content */}
         <div className="flex items-center justify-center h-screen">
           <h1 className="font-extralight text-center text-2xl sm:text-4xl lg:text-5xl">
             Transform Your Emotions into Stories <br />
@@ -45,8 +36,7 @@ export default function Home() {
             </button>
           </h1>
         </div>
-        {/* How it Works Section */}
       </BackgroundLines>
-    </div>
+    </HomeLayout>
   );
 }
