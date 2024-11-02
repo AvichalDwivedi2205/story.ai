@@ -9,7 +9,7 @@ import {
   UserCredential
 } from "firebase/auth";
 import { auth, googleProvider, firestore } from "@/config/firebase";
-import { getDoc, doc, setDoc, query, collection, where, getDocs } from "firebase/firestore";
+import { doc, setDoc, query, collection, where, getDocs } from "firebase/firestore";
 
 export default function AuthForm({ isSignUp }: { isSignUp: boolean }) {
   // State variables for email and password
@@ -102,7 +102,7 @@ export default function AuthForm({ isSignUp }: { isSignUp: boolean }) {
   }
 
   return (
-    <div className="auth-form-container flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="card-gradient p-6 rounded-lg shadow-xl w-full max-w-md">
         <h2 className="text-center gradient-text text-3xl font-bold mb-6">
           Welcome To Story.AI

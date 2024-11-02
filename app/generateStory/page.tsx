@@ -1,9 +1,9 @@
-import React from 'react'
+import SideBar from "@/components/story/Sidebar"
 
 function page() {
   return (
     <div>
-      Generate Story
+      <SideBar />
     </div>
   )
 }
