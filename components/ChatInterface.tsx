@@ -6,8 +6,8 @@ import CreditsDisplay from "./CreditsDisplay";
 import { Story } from '@/schema/schema';
 import { auth, firestore } from "@/config/firebase";
 import axios from 'axios';
-import { doc, updateDoc } from 'firebase/firestore';
 import { PenSquare } from 'lucide-react';
+import { collection, addDoc, getDocs, deleteDoc, query, orderBy, limit, doc, updateDoc } from "firebase/firestore";
 
 interface ChatInterfaceProps {
   user: User;
@@ -51,6 +51,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ user, onStoryGenerated })
     }
   };
 
+  
   const startNewStory = () => {
     updateUserCredits();
     setMessages([{ content: questions[0], isUser: false }]);
@@ -64,10 +65,23 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ user, onStoryGenerated })
     setIsStoryComplete(false);
   };
 
+  const addStoryToFirestore = async (newStory: Story) => {
+    const storiesRef = collection(firestore, "stories");
+    const userStoriesQuery = query(storiesRef, orderBy("createdAt", "desc"), limit(20));
+    const userStoriesSnapshot = await getDocs(userStoriesQuery);
+  
+    if (userStoriesSnapshot.size >= 20) {
+      const oldestStoryDoc = userStoriesSnapshot.docs[userStoriesSnapshot.size - 1];
+      await deleteDoc(doc(storiesRef, oldestStoryDoc.id));
+    }
+  
+    await addDoc(storiesRef, newStory);
+  };
+
   const generateStoryWithGemini = async () => {
     if (user.availableCredits <= 0) {
       setMessages(prev => [...prev, {
-        content: "You've used all your available credits for today. Please try again tomorrow or upgrade to premium plan to experience more daily credits.",
+        content: "You've used all your available credits for today. Please try again tomorrow or upgrade to premium plan to experience more daily.",
         isUser: false
       }]);
       return;
@@ -105,12 +119,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ user, onStoryGenerated })
         userId: user.uid,
         title: userResponses.emotion,
         content: generatedStory,
-        emotion: userResponses.emotion,
+        emotion: `${userResponses.emotion} to ${userResponses.desiredOutcome}`,
         outcome: userResponses.desiredOutcome,
         createdAt: new Date()
       };
 
       onStoryGenerated(newStory);
+      await addStoryToFirestore(newStory); // Store in Firestore
       await updateUserCredits();
       setIsStoryComplete(true);
       

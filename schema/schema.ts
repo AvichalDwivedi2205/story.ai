@@ -18,36 +18,3 @@ export interface User {
     outcome: string;
     createdAt: Date;
   };  
-
-  export const emotions = [
-    "Happy",
-    "Sad",
-    "Angry",
-    "Fearful",
-    "Anxious",
-    "Hopeless",
-    "Frustrated",
-    "Bored",
-    "Ashamed",
-    "Guilty",
-    "Jealous",
-    "Lonely",
-    "Overwhelmed"
-  ];
-
-  export const outcomes = [
-    "Positive",
-    "Successful",
-    "Satisfying",
-    "Inspiring",
-    "Calming",
-    "Hopeful",
-    "Relieved",
-    "Motivated",
-    "Empowered",
-    "Confident",
-    "Grateful",
-    "Joyful",
-    "Peaceful",
-    "Fulfilled"
-  ];

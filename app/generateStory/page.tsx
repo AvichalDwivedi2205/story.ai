@@ -55,7 +55,7 @@ export default function Home() {
 
   return (
     <div className="relative">
-      <Sidebar stories={[]} onStorySelect={() => {}} />
+      <Sidebar userId={user?.uid || ""} onStorySelect={() => {}} onNewStory={() => {}}/>
       {user && <ChatInterface user={user} onStoryGenerated={() => {}} />}
     </div>
   );
