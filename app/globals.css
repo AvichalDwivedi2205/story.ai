@@ -81,21 +81,27 @@ body {
       background-color: white;
       position: relative;
       transition: transform 0.3s;
+      transition: transform 0.3s;
+      z-index: 10000;
   }
   &::after{
       top: -5px;
+      z-index: 10000;
   }
   &::before{
       top: 5px;
+      z-index: 10000;
   }
 }
 .burgerActive{
   &::after{
       transform: rotate(45deg);
       top: -1px;
+      z-index: 10000;
   }
   &::before{
       transform: rotate(-45deg);
       top: 0px;
+      z-index: 10000;
   }
 }

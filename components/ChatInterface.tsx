@@ -117,9 +117,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ user, onStoryGenerated })
       const newStory: Story = {
         storyId: Date.now().toString(),
         userId: user.uid,
-        title: userResponses.emotion,
+        title: `${userResponses.emotion} to ${userResponses.desiredOutcome}`,
         content: generatedStory,
-        emotion: `${userResponses.emotion} to ${userResponses.desiredOutcome}`,
+        emotion: userResponses.emotion,
         outcome: userResponses.desiredOutcome,
         createdAt: new Date()
       };
