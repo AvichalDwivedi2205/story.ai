@@ -19,6 +19,7 @@ interface UserData {
 }
 
 export default function Home() {
+  const [isSidebarActive, setIsSideBarActive] = useState(false);
   const router = useRouter();
   const [firebaseUser, loading, error] = useAuthState(auth);
   const [user, setUser] = useState<UserData | null>(null);
@@ -55,7 +56,7 @@ export default function Home() {
 
   return (
     <div className="relative">
-      <Sidebar userId={user?.uid || ""} onStorySelect={() => {}} onNewStory={() => {}}/>
+      <Sidebar isActive={isSidebarActive} setIsActive={setIsSideBarActive} />
       {user && <ChatInterface user={user} onStoryGenerated={() => {}} />}
     </div>
   );
