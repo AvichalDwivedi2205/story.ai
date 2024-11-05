@@ -1,17 +1,54 @@
-import SideBar from "@/components/story/Sidebar";
-import DescriptionStory from "@/components/story/DescriptionStory";
+"use client"
+import { useEffect, useState } from 'react';
+import {useRouter} from "next/navigation";
+import { auth, firestore } from '@/config/firebase'; // Make sure you have initialized firestore in this import
+import ChatInterface from '@/components/ChatInterface';
+import Sidebar from '@/components/Sidebar';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
-function page() {
+interface UserData {
+  availableCredits: number;
+  createdAt: Date;
+  dailyCreditLimit: number;
+  email: string;
+  lastCreditReset: Date;
+  name: string;
+  planType: string;
+  uid: string;
+}
+
+export default function Home() {
+  const router = useRouter();
+  const [firebaseUser, loading, error] = useAuthState(auth);
+  const [user, setUser] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (firebaseUser) {
+        const userRef = doc(firestore, 'users', firebaseUser.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+          const userData = userSnap.data() as UserData;
+          setUser(userData);
+        } else {
+          console.log("No user data found!");
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [firebaseUser]);
+
+  // Show loading or error messages if necessary
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
-    <div className="flex flex-col md:flex-row bg-slate-950">
-      <div className="fixed md:relative z-50 w-full md:w-auto">
-        <SideBar />
-      </div>
-      <div className="w-full md:pl-20 mt-20 md:mt-0 flex justify-center md:block">
-        <DescriptionStory />
-      </div>
+    <div className="relative">
+      <Sidebar stories={[]} onStorySelect={() => {}} />
+      {user && <ChatInterface user={user} onStoryGenerated={() => {}} />}
     </div>
   );
 }
-
-export default page;

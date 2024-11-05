@@ -3,12 +3,16 @@ import { useState } from "react";
 import axios from "axios";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import HomeLayout from "./home-layout"
+import { auth } from "@/config/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Home() {
-  const prompt = "I am very depressed. Write me a story to cheer me up. It should start with The story goes like this";
+  const prompt = "I want to have sex but when I go out to talk to girls at night nobody can see me because I am black. I am very depressed. Skip this shit talk and get to point how people can see me in night. connections are not problem , problem is I am black skin coloured and I comoflauge at night. their is no sufficient light";
   const [output, setOutput] = useState("Ok bro!");
 
-  const generateText = async () => {
+  const [user, loading, error] = useAuthState(auth)
+
+   const generateText = async () => {
     try {
       const response = await axios.post("/api/generate", { body: prompt });
       setOutput(response.data.output);
@@ -34,6 +38,7 @@ export default function Home() {
               <div className="absolute top-0 left-[-10px] h-full w-0 bg-[#240046] skew-x-15 transition-all duration-500 ease-in group-hover:w-[58%] z-0"></div>
               <div className="absolute top-0 right-[-10px] h-full w-0 bg-[#5a189a] skew-x-15 transition-all duration-500 ease-in group-hover:w-[58%] z-0"></div>
             </button>
+            {user && <p>User in</p>}
           </h1>
         </div>
       </BackgroundLines>
