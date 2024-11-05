@@ -4,6 +4,7 @@ import { collection, query, orderBy, limit, deleteDoc, doc, where, getDocs } fro
 import { Trash2, Loader2 } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 // Define the Story interface
 interface Story {
@@ -148,6 +149,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isActive, setIsActive }) => {
             ) : (
               <div className="space-y-4">
                 {stories.map((story) => (
+                  <Link href={`/stories/${story.id}`} key={story.id}>
                   <div key={story.id} className="p-3 rounded-lg border bg-card relative group">
                     <h3 className="font-medium mb-1">{story.title}</h3>
                     <p className="text-sm text-muted-foreground line-clamp-2">{story.content}</p>
@@ -158,6 +160,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isActive, setIsActive }) => {
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </button>
                   </div>
+                  </Link>
                 ))}
               </div>
             )}

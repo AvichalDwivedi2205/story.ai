@@ -1,9 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getApp, getApps } from "firebase/app";
-import { getFirestore } from "firebase/firestore"
+import { getFirestore, doc, getDoc } from "firebase/firestore"
+import { Story } from "@/schema/schema";
+
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -18,8 +19,17 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
-const analytics = getAnalytics(app);
 const googleProvider = new GoogleAuthProvider()
 const firestore = getFirestore(app)
 
-export {app, firestore, analytics, auth, googleProvider}
+export async function getStoryById(id: string): Promise<Story | null> {
+  const storyRef = doc(firestore, 'stories', id);
+  const storySnap = await getDoc(storyRef);
+  if (storySnap.exists()) {
+    return { storyId: storySnap.id, ...storySnap.data() } as Story;
+  } else {
+    return null;
+  }
+}
+
+export {app, firestore, auth, googleProvider}
