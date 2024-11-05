@@ -7,6 +7,7 @@ import { Story } from '@/schema/schema';
 import { auth, firestore } from "@/config/firebase"
 import axios from 'axios';
 import { doc, updateDoc } from 'firebase/firestore';
+import { PenSquare } from 'lucide-react';
 
 interface ChatInterfaceProps {
   user: User;
@@ -23,6 +24,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ user, onStoryGenerated })
   });
   const [input, setInput] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isStoryComplete, setIsStoryComplete] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const questions = [
@@ -47,6 +49,18 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ user, onStoryGenerated })
     } catch (error) {
       console.error('Error updating credits:', error);
     }
+  };
+
+  const startNewStory = () => {
+    setMessages([{ content: questions[0], isUser: false }]);
+    setCurrentStep(0);
+    setUserResponses({
+      emotion: '',
+      desiredOutcome: '',
+      backgroundStory: ''
+    });
+    setInput('');
+    setIsStoryComplete(false);
   };
 
   const generateStoryWithGemini = async () => {
@@ -97,6 +111,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ user, onStoryGenerated })
 
       onStoryGenerated(newStory);
       await updateUserCredits();
+      setIsStoryComplete(true);
       
     } catch (error) {
       console.error('Error generating story:', error);
@@ -156,25 +171,39 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ user, onStoryGenerated })
           <div ref={messagesEndRef} />
         </div>
         
-        <form onSubmit={handleSubmit} className="fixed bottom-4 left-0 right-0 max-w-3xl mx-auto px-4">
-          <div className="relative">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              disabled={isGenerating}
-              className="w-full p-4 rounded-lg bg-white/10 backdrop-blur-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
-              placeholder={isGenerating ? "Generating story..." : "Type your message..."}
-            />
+        <div className="fixed bottom-4 left-0 right-0 max-w-3xl mx-auto px-4">
+          {isStoryComplete ? (
             <button
-              type="submit"
-              disabled={isGenerating}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-purple-400 disabled:opacity-50 disabled:hover:text-white"
+              onClick={startNewStory}
+              className="w-full p-4 rounded-lg bg-purple-600/30 backdrop-blur-md text-white 
+                       hover:bg-purple-500/40 transition-colors duration-200 flex items-center justify-center gap-2"
             >
-              Send
+              <PenSquare className="w-5 h-5" />
+              Start New Story
             </button>
-          </div>
-        </form>
+          ) : (
+            <form onSubmit={handleSubmit} className="relative">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                disabled={isGenerating}
+                className="w-full p-4 rounded-lg bg-white/10 backdrop-blur-md text-white 
+                         placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 
+                         disabled:opacity-50"
+                placeholder={isGenerating ? "Generating story..." : "Type your message..."}
+              />
+              <button
+                type="submit"
+                disabled={isGenerating}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white 
+                         hover:text-purple-400 disabled:opacity-50 disabled:hover:text-white"
+              >
+                Send
+              </button>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );
