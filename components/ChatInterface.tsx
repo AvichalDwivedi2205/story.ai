@@ -7,7 +7,7 @@ import { Story } from '@/schema/schema';
 import { auth, firestore } from "@/config/firebase";
 import axios from 'axios';
 import { PenSquare } from 'lucide-react';
-import { collection, addDoc, getDocs, deleteDoc, query, orderBy, limit, doc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, query, orderBy, limit, doc, updateDoc, onSnapshot } from "firebase/firestore";
 
 interface ChatInterfaceProps {
   user: User;
@@ -26,6 +26,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ user, onStoryGenerated })
   const [isGenerating, setIsGenerating] = useState(false);
   const [isStoryComplete, setIsStoryComplete] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [userState, setUserState] = useState<User>(user);
 
   const questions = [
     "Take a moment to reflect. How would you describe the emotion you're feeling most strongly right now? Examples: calm, frustrated, anxious, hopeful, or something else.",
@@ -40,6 +41,18 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ user, onStoryGenerated })
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  useEffect(() => {
+    const userRef = doc(firestore, 'users', user.uid);
+    const unsubscribe = onSnapshot(userRef, (doc) => {
+      if (doc.exists()) {
+        const userData = doc.data() as User;
+        setUserState(userData); // Update local state with real-time user data
+      }
+    });
+  
+    return () => unsubscribe(); // Clean up listener on component unmount
+  }, [user.uid]);
+  
   const updateUserCredits = async () => {
     try {
       const userRef = doc(firestore, 'users', user.uid);
@@ -171,9 +184,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ user, onStoryGenerated })
   return (
     <div className="circular-gradient min-h-screen p-4">
       <div className="fixed top-4 right-4 z-10">
-        <CreditsDisplay 
-          availableCredits={user.availableCredits}
-          dailyCreditLimit={user.dailyCreditLimit}
+      <CreditsDisplay 
+          availableCredits={userState.availableCredits}
+          dailyCreditLimit={userState.dailyCreditLimit}
         />
       </div>
       

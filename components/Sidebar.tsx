@@ -114,8 +114,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isActive, setIsActive }) => {
                     ) : (
                       <div className="group flex items-center hover:cursor-pointer gap-1">
                         <Trash2 className="h-4 w-4 group-hover:text-gray-400" />
-                        <p className="group-hover:text-gray-400 pt-1">Delete All</p>
+                        <p className="group-hover:text-gray-400">Delete All</p>
                       </div>
+
                     )}
                   </Button>
                 </AlertDialogTrigger>
@@ -154,7 +155,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isActive, setIsActive }) => {
                       onClick={() => handleDeleteStory(story.id)}
                       className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
                     >
-                      <Trash2 className="h-4 w-4 text-destructive hover:text-gray-400" />
+                      <Trash2 className="h-4 w-4 text-destructive" />
                     </button>
                   </div>
                 ))}
