@@ -7,13 +7,12 @@ interface CreditsDisplayProps {
 
 const CreditsDisplay: React.FC<CreditsDisplayProps> = ({ availableCredits, dailyCreditLimit }) => {
   return (
-    <div className="absolute top-4 right-4 backdrop-blur-md bg-white/10 p-4 rounded-lg">
-      <div className="text-white text-sm">
-        <p>Credits Available: {availableCredits}</p>
-        <p>Daily Limit: {dailyCreditLimit}</p>
+    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 backdrop-blur-md bg-white/20 p-4 rounded-lg shadow-lg border border-white/20">
+      <div className="text-white text-sm text-center space-y-1">
+        <p className="font-semibold">Daily Credits available: <span className="text-emerald-400">{availableCredits}/{dailyCreditLimit}</span></p>
       </div>
     </div>
   );
 };
 
-export default CreditsDisplay
+export default CreditsDisplay;
